@@ -1,6 +1,6 @@
 # OS Visualization: Deadlock Detection & Avoidance - Resource Allocation Graph
 
-Live version of the website [here]([https://vercel.com/shrihari6105s-projects/resource-allocation-graph-visualizer/9pfFKDGF2RJuxqYvFkWJNkbPs4fU](https://resource-allocation-graph-vis-git-7d86c1-shrihari6105s-projects.vercel.app/))
+Live version of the website [here](https://resource-allocation-graph-vis-git-7d86c1-shrihari6105s-projects.vercel.app/)
 
 A standalone, client-only web application to visualize core Operating System concepts around deadlock detection and simple avoidance using a Resource Allocation Graph (RAG). Runs locally in any modern browser with zero server dependencies.
 

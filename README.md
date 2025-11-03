@@ -10,7 +10,7 @@ A standalone, client-only web application to visualize core Operating System con
 
 1. Download or clone the project files into a folder:
    - `index.html`
-   - `styles.css` (or `style.css`, see Troubleshooting)
+   - `styles.css`
    - `rag.js`
    - `app.js`
 2. Double-click `index.html` to open it in your browser.

@@ -31,6 +31,7 @@ body {
   justify-content: space-between;
   border-bottom: 1px solid #1f2755;
 }
+
 .app-footer { border-top: 1px solid #1f2755; border-bottom: none; }
 .app-header h1 { margin: 0; font-size: 18px; font-weight: 600; }
 .header-right button { margin-left: 8px; }

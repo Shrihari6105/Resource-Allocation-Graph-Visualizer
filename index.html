@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>OS Visualization: Deadlock Detection & Avoidance (RAG)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <header class="app-header">
+    <h1>Resource Allocation Graph</h1>
+    <div class="header-right">
+      <button id="btn-export-screenshot" title="Export Canvas as PNG">Export Screenshot</button>
+      <button id="btn-export-trace" title="Export Execution Trace as JSON">Export Trace</button>
+      <a id="download-link" style="display:none"></a>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <aside class="sidebar" id="sidebar">
+      <section>
+        <h2>Setup</h2>
+        <div class="grid-2">
+          <div>
+            <label>Process Name</label>
+            <input id="proc-name" type="text" placeholder="P1" />
+            <button id="btn-add-proc">Add Process</button>
+          </div>
+          <div>
+            <label>Resource Name</label>
+            <input id="res-name" type="text" placeholder="R1" />
+            <label class="inline">Instances</label>
+            <input id="res-instances" type="number" min="1" value="1" />
+            <button id="btn-add-res">Add Resource</button>
+          </div>
+        </div>
+        <div class="list-wrap">
+          <div>
+            <h3>Processes</h3>
+            <ul id="proc-list" class="list"></ul>
+          </div>
+          <div>
+            <h3>Resources</h3>
+            <ul id="res-list" class="list"></ul>
+          </div>
+        </div>
+        <div class="inline-controls">
+          <button id="btn-clear-all" class="danger">Clear All</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Scenarios</h2>
+        <div class="grid-2">
+          <button id="btn-sample-1">Load: 2-Proc Cycle</button>
+          <button id="btn-sample-2">Load: No Deadlock</button>
+          <button id="btn-sample-3">Load: 3-Proc Cycle</button>
+          <button id="btn-sample-4">Load: Contention</button>
+        </div>
+        <div class="inline-controls">
+          <button id="btn-quick-demo">Quick Demo (Load & Play)</button>
+        </div>
+      </section>
+
+      <section>
+        <h2>Mode & Options</h2>
+        <div class="option">
+          <label><input type="checkbox" id="chk-avoidance" /> Enable Avoidance Mode (cycle-prevention)</label>
+          <div class="hint">Denies requests that immediately create a wait-for cycle. Best for single-instance resources.</div>
+        </div>
+        <div class="option">
+          <label><input type="checkbox" id="chk-auto-grant" checked /> Auto-grant available requests during Play</label>
+        </div>
+        <div class="option">
+          <label><input type="checkbox" id="chk-show-wfg" /> Show Wait-For Graph Overlay</label>
+        </div>
+      </section>
+
+      <section>
+        <h2>Create Event</h2>
+        <div class="grid-2">
+          <div>
+            <label>Process</label>
+            <select id="event-proc"></select>
+          </div>
+          <div>
+            <label>Resource</label>
+            <select id="event-res"></select>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div>
+            <label>Units</label>
+            <input id="event-count" type="number" min="1" value="1" />
+          </div>
+          <div>
+            <label>Type</label>
+            <select id="event-type">
+              <option value="request">Request</option>
+              <option value="release">Release</option>
+            </select>
+          </div>
+        </div>
+        <div class="inline-controls">
+          <button id="btn-queue-event">Queue Event</button>
+          <button id="btn-clear-events" class="danger">Clear Events</button>
+        </div>
+        <div>
+          <h3>Pending Events</h3>
+          <ol id="event-queue" class="event-list"></ol>
+        </div>
+      </section>
+
+      <section>
+        <h2>Execution Controls</h2>
+        <div class="controls">
+          <button id="btn-reset">Reset</button>
+          <button id="btn-step-back">Step ⟲</button>
+          <button id="btn-play">Play ▶</button>
+          <button id="btn-pause" disabled>Pause ⏸</button>
+          <button id="btn-step-forward">Step ⟳</button>
+        </div>
+        <div class="slider">
+          <label>Animation Speed</label>
+          <input id="speed-range" type="range" min="0.1" max="3" step="0.1" value="1" />
+        </div>
+        <div class="status">
+          <div>Step: <span id="status-step">0</span></div>
+          <div>State: <span id="status-state">Idle</span></div>
+          <div>Deadlock: <span id="status-deadlock">No</span></div>
+        </div>
+      </section>
+    </aside>
+
+    <section class="canvas-wrap">
+      <!-- <div class="legend">
+        <div><span class="line line-assign"></span> Assignment R→P</div>
+        <div><span class="line line-wait"></span> Waiting P→R</div>
+        <div><span class="line line-wfg"></span> WFG P→P</div>
+        <div><span class="dot dot-ready"></span> Ready Proc</div>
+        <div><span class="dot dot-blocked"></span> Blocked Proc</div>
+        <div><span class="dot dot-deadlocked"></span> Deadlocked Proc</div>
+      </div> -->
+      <canvas id="canvas"></canvas>
+      <div id="tooltip" class="tooltip" style="display:none;"></div>
+
+      <section class="stats">
+        <h2>Statistics</h2>
+        <div id="stats-content" class="stats-content"></div>
+      </section>
+
+      <section class="log">
+        <h2>Execution Log</h2>
+        <div id="log-content" class="log-content"></div>
+      </section>
+    </section>
+  </main>
+
+  <footer class="app-footer">
+    <span>Keyboard: Space = Play/Pause, Left = Step Back, Right = Step Forward.</span>
+  </footer>
+
+  <script src="./rag.js"></script>
+  <script src="./app.js"></script>
+</body>
+</html>
